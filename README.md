@@ -3,9 +3,9 @@ Final project for ESET 269 at Texas A&M University, Fall 2019
 
 Contributors:
 
-Kristopher Elers (UI design, RGB Control, Functions)
-Alex Liu (RGB Control, Digital Input)
-Maksym Sury (RGB Control, Digital Input, Temperature Reading)
+- Kristopher Elers (UI design, RGB Control, Functions)
+- Alex Liu (RGB Control, Digital Input)
+- Maksym Sury (RGB Control, Digital Input, Temperature Reading)
 
 This project was written in C using Keil µVision IDE and requires Teraterm (Baud Rate: 115200) and a MSP432P401R Launchpad.  Menu option 3 requires a temperature sensor on a breadboard with jumper wires hooked up to P5.4 with power running to a 3.3V connector and grounded at the ground connector underneath the 5V pin on the MSP432 Launchpad.  Ensure that your circuit is correct before connecting the power.  The temperature sensor will overheat if it's incorrect and could destroy the MSP432.
 
