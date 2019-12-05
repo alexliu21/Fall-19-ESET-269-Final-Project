@@ -2,9 +2,6 @@
 //  functions.c
 //  ESET269Final
 //
-//  Created by Kris Elers on 11/18/19.
-//  Copyright © 2019 Kris Elers. All rights reserved.
-//
 
 #include "functions.h"
 #include "MSP.h"
@@ -15,9 +12,9 @@
 /*
 *   Function for initializing UART
 *   Returns: void
-*   Author: Kristopher Elers
+*   Author: Alex Liu
 */
-void UARTinit(void) {
+void UARTinit(void){
     EUSCI_A0 ->CTLW0 |= 1;   // Put into reset state
     EUSCI_A0 ->MCTLW = 0;
     EUSCI_A0 ->CTLW0 = 0x0081;   // 1 stop bit, no parity, SMCLK, 8-BIT DATA
@@ -47,7 +44,6 @@ void PINinitRGB(void){
 	P2 ->SEL0 &= ~0x07; //activate every pin in port 2
 	P2 ->SEL1 &= ~0x07;
 	P2 ->DIR |= 0x07;
-	
 } 
 
 /*
@@ -55,7 +51,7 @@ void PINinitRGB(void){
 *   Returns: void
 *   Author: Logan Porter
 */
-void ADCinit(void)  {
+void ADCinit(void){
     ADC14 ->CTL0 =  0x00000010;    // power on and disable during configuration
     ADC14 ->CTL0 |= 0x04080300;    // sample and hold mode, sysclk, 32 sample clocks, software trigger
     ADC14 ->CTL1 =  0x00000030;    // 14-bit resolution 
@@ -72,7 +68,7 @@ void ADCinit(void)  {
 *   Returns: int
 *   Author: Logan Porter
 */
-int ADCRead(void)   {
+int ADCRead(void){
     int z = 0;
     ADC14 ->CTL0 |= 1;         // start a conversion
     while (!ADC14 ->IFGR0);    // wait till conversion complete
@@ -86,7 +82,7 @@ int ADCRead(void)   {
 *   Returns: void
 *   Author: Kristopher Elers
 */
-void Uprint(char string[]) {
+void Uprint(char string[]){
     int i = 0;
 
     while(string[i] != 0) {
@@ -102,7 +98,7 @@ void Uprint(char string[]) {
 /*
 *   Function for getting the users choice
 *   Returns: int
-*   Author: Kristopher Elers
+*   Author: Alex Liu and Kris Elers
 */
 int getChoice(void) {
     char choice[2];
@@ -120,7 +116,7 @@ int getChoice(void) {
             }
         }
     }
-		return atoi(choice);
+    return atoi(choice);
 }   // getChoice
 
 
@@ -129,12 +125,12 @@ int getChoice(void) {
 *   Returns: void
 *   Author: Kristopher Elers
 */
-void mainMenu(void) {
+void mainMenu(void){
     Uprint("\n\r\n\tMSP432 Menu\n\r");
     Uprint("1. RGB Control\n\r");
     Uprint("2. Digital Input\n\r");
     Uprint("3. Temperature Reading\n\r");
-	Uprint("4. Quit\n\r");
+    Uprint("4. Quit\n\r");
 }   // mainMenu
 
 
@@ -143,14 +139,14 @@ void mainMenu(void) {
 *   Returns: void
 *   Author: Kristopher Elers
 */
-void getMenu(void) {
+void getMenu(void){
 	int option = 0;
 	
-    while(option != 4) {
+    while(option != 4){
         mainMenu();
         Uprint("Select Option: ");
         int option = getChoice();
-        switch(option) {
+        switch(option){
             case 1:
                 rgbControl();
                 break;
@@ -173,17 +169,16 @@ void getMenu(void) {
 /*
 *   Function for RGB Control
 *   Returns: void
-*   Author: Alex Liu
+*   Author: Alex Liu and Maksym Sury
 */
-void rgbControl(void) {
+void rgbControl(void){
     int rgb;    // RGB combination character array
     int tog;    // Toggle time
     int blink;  // Number of blinks
-		P2 ->SEL0 &= ~0x07; //activate every pin in port 2
-		P2 ->SEL1 &= ~0x07;
-		P2 ->DIR |= 0x07;
+    P2 ->SEL0 &= ~0x07; //activate every pin in port 2
+    P2 ->SEL1 &= ~0x07;
+    P2 ->DIR |= 0x07;
 		
-	
     Uprint("\n\r\n\rEnter a combination of RGB (1-7): ");
     rgb = getChoice();
     Uprint("\n\rEnter the toggle time: ");
@@ -200,11 +195,9 @@ void rgbControl(void) {
     for(int i = 0; i <= (blink - 1); i++) { // Blink RGB combo 'blink' times
 				SysTick->CTRL |= 0x01;
 				while((SysTick ->CTRL & 0x10000) == 0) {
-            // Do nothing
-        }
-
+            			    // Do nothing
+      				}
 				P2 ->OUT |= 0x00 + rgb;
-      
         while((SysTick ->CTRL & 0x10000) == 0) {
             // Do nothing
         }
@@ -220,7 +213,7 @@ void rgbControl(void) {
 /*
 *   Function for detecting digital input
 *   Returns: void
-*   Author: Kristopher Elers
+*   Author: Kristopher Elers and Alex Liu
 */
 
 void digitalInput(void) {
@@ -254,7 +247,7 @@ void digitalInput(void) {
 *   Returns: void
 *   Author: Maksym Sury
 */
-void tempReading(void) {
+void tempReading(void){
     int x = 0; //iteration value for char array (string)
     int choice;
     int ans; //variable for math answer
@@ -268,12 +261,12 @@ void tempReading(void) {
     ans = getChoice();
     Uprint("\n\r\n\r");
     
-    for(int i = 1; i <= ans; i++) {   
+    for(int i = 1; i <= ans; i++){   
         int y = 0;
         float temp = ADCRead();
         float tempC = ((temp-3300.000)/20.0);
         float tempF = (tempC * (9.0 / 5.0) + 32.0);
-        while((SysTick->CTRL & 0x10000) == 0) {
+        while((SysTick->CTRL & 0x10000) == 0){
             // Do nothing
         }
 
