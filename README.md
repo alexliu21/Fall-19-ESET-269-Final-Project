@@ -18,7 +18,7 @@ MSP432 Menu
   3. Temperature Reading
   4. Quit
 
-- Selecting option 1 will prompt the user for a RGB value (1-7), a toggle time, and a number of blinks. It will then blink the LED the desired color, with the desired delay, the desired amount of times.
-- Selecting option 2 will print the current button(s) that are held down. Please hold the button(s) down BEFORE pressing enter.
+- Selecting option 1 will prompt the user for an RGB value (1-7), a toggle time, and a number of blinks.  It will then blink the LED the desired color, with the desired delay, the desired amount of times.
+- Selecting option 2 will print the current button(s) that are held down.  Please hold the button(s) down BEFORE pressing enter.
 - Selecting option 3 will ask the user for a number of temperature readings (1-5) to perform and will print the temperature that the temperature sensor is reading in both Celsius and Fahrenheit.
 - Selecting option 4 will stop the program.
